@@ -2,6 +2,7 @@ import { Container, Col, Row, Card, Button, Form, Navbar, Modal, Table } from 'r
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
+import Axios from '../axios';
 
 function Dashboard() {
   const [show, setShow] = useState(false);
@@ -29,11 +30,8 @@ function Dashboard() {
     </tr>
   </thead>
   <tbody>
+  <Axios />
     <tr>
-      <td>1</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
       <td>
       <Button variant="success" onClick={handleShow}>Edit</Button>
       <Button variant="danger" onClick={handleShow}>Delete</Button>
