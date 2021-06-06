@@ -35,8 +35,11 @@ class Dashboard extends Component {
         <Button variant="danger" onClick={this.handleShow}>Logout</Button>
         </Link>
       </Navbar>
+      <br />
           <Container>
             <Button variant="primary" onClick={() => this.handleShow('addModal')} className="float-end">Add</Button>
+            <br />
+            <br />
             {/* Add Modal  */}
             <Modal show={this.state.show == 'addModal'} onHide={this.handleClose}>
             <Modal.Header closeButton>

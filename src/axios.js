@@ -10,6 +10,12 @@ function DataList(){
         data: []
     });
 
+    const [targets, setTarget] = useState({
+        target: []
+    });
+
+    const [status, setStatus] = useState(null);
+
     useEffect(async () => {
         axios({
             method: 'get',
@@ -29,6 +35,35 @@ function DataList(){
             });
       });
 
+    const deleteTarget = (id) => {
+        axios.delete('https://skem-api.vercel.app/api/deleteTarget/' + id)
+            .then(() => setStatus('Delete successful'));
+    }
+
+    const updateTarget = (id) => {
+        axios.put('https://skem-api.vercel.app/api/updateTarget/' + id)
+            .then(() => setStatus('Ipdate successful'));
+    }
+
+    const getTarget = (id) => {
+        axios({
+            method: 'get',
+            url: 'https://skem-api.vercel.app/api/getOneTarget' + id,
+            responseType: 'json'
+          })
+            .then(function (res) {
+              console.log(res);
+              let details = [];
+    
+                for (var i = 0; i < Object.keys(res.data.message).length; i++) {
+                    details.push({ name: i, value: res.data.message[i] })
+                }
+                console.log("fjhdhfjdhfj" + i);
+                console.log(details);
+                setTarget({target: details});
+            });
+    }
+
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -43,14 +78,15 @@ function DataList(){
             <Modal.Title>Edit Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <Form>
+            {targets.target.map(target => 
+            <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Author</Form.Label>
-            <Form.Control type="text" placeholder="Enter Author" />
+            <Form.Control type="text" placeholder={target.value.author} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Image Name</Form.Label>
-            <Form.Control type="text" placeholder="Enter Image Name" />
+            <Form.Control type="text" placeholder={target.value.img_name} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Image</Form.Label>
@@ -58,7 +94,8 @@ function DataList(){
             </Form.Group>
             <Button variant="secondary" onClick={handleClose}>Cancel</Button>
             <Button variant="primary" type="submit">Edit</Button>
-        </Form>
+            </Form>
+            )}
         </Modal.Body>
         </Modal>
         <Table striped bordered hover>
@@ -81,8 +118,8 @@ function DataList(){
                 {/* <td>{data.value.image}</td> */}
                 <td>{data.value.img_name}</td>
                 <td>
-                    <Button variant="success" onClick={handleShow} key={data.value.Target_ID}>Edit</Button>
-                    <Button variant="danger">Delete</Button>
+                    <Button variant="success" onClick={handleShow}>Edit</Button>
+                    <Button variant="danger" onClick={deleteTarget(data.value.Target_ID)}>Delete</Button>
               </td>
                 </tr>
              )}
