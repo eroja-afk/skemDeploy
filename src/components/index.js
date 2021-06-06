@@ -14,34 +14,35 @@ function Index() {
     <Navbar bg="light">
       <Navbar.Brand>PC Builder</Navbar.Brand>
       <Button variant="primary" onClick={handleShow}>Login</Button>
-  </Navbar>
+    </Navbar>
+
        <Modal show={show} onHide={handleClose}>
          <Modal.Header closeButton>
            <Modal.Title>Login</Modal.Title>
          </Modal.Header>
          <Modal.Body>
          <Form>
-  <Form.Group className="mb-3" controlId="formBasicEmail">
-    <Form.Label>Email address</Form.Label>
-    <Form.Control type="email" placeholder="Enter email" />
-    <Form.Text className="text-muted">
-      We'll never share your email with anyone else.
-    </Form.Text>
-  </Form.Group>
-  <Form.Group className="mb-3" controlId="formBasicPassword">
-    <Form.Label>Password</Form.Label>
-    <Form.Control type="password" placeholder="Password" />
-  </Form.Group>
-  <Form.Group className="mb-3" controlId="formBasicCheckbox">
-    <Form.Check type="checkbox" label="Check me out" />
-  </Form.Group>
-  <Button variant="secondary" onClick={handleClose}>
-    Close
-  </Button>
-  <Link to="/dashboard">
-    <Button variant="primary" type="submit">Submit</Button>
-        </Link>
-</Form>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control type="email" placeholder="Enter email" />
+            <Form.Text className="text-muted">
+              We'll never share your email with anyone else.
+            </Form.Text>
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control type="password" placeholder="Password" />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicCheckbox">
+            <Form.Check type="checkbox" label="Check me out" />
+          </Form.Group>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Link to="/dashboard">
+            <Button variant="primary" type="submit">Submit</Button>
+                </Link>
+        </Form>
          </Modal.Body>
        </Modal>
        <Container>
