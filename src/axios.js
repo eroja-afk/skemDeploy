@@ -1,22 +1,25 @@
 import axios from 'axios';
 import React, { useEffect, useState, Component, setState } from "react";
-import { Container, Col, Row, Card, Button, Form, Navbar, Modal, Table } from 'react-bootstrap';
+import { Container, Col, Row, Card, Button, Form, Navbar, Modal, Table, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 
 function DataList(){
 
-    const [datas, setDatas] = useState({
-        data: []
-    });
+    useEffect(() => {
+        getAllTargets();
+   }, []);
 
-    const [targets, setTarget] = useState({
-        target: []
-    });
 
-    const [status, setStatus] = useState(null);
+    const [data, setData] = useState([]);
+    var datas =[]
+    var targets =[]
+    //const [targets, setTarget] = useState([]);
 
-    useEffect(async () => {
+    const [status, setStatus] = useState("");
+
+    const getAllTargets = () => {
+        console.log("wTF dasdadad")
         axios({
             method: 'get',
             url: 'https://skem-api.vercel.app/api/getAllTargets',
@@ -30,39 +33,58 @@ function DataList(){
                     details.push({ name: i, value: res.data.message[i] })
                 }
                 console.log("fjhdhfjdhfj" + i);
-                console.log(details);
-                setDatas({data: details});
+                console.log(datas);
+                //setDatas(details);
+                setData(details)
             });
-      });
-
-    const deleteTarget = (id) => {
-        axios.delete('https://skem-api.vercel.app/api/deleteTarget/' + id)
-            .then(() => setStatus('Delete successful'));
-    }
-
-    const updateTarget = (id) => {
-        axios.put('https://skem-api.vercel.app/api/updateTarget/' + id)
-            .then(() => setStatus('Ipdate successful'));
-    }
-
-    const getTarget = (id) => {
-        axios({
-            method: 'get',
-            url: 'https://skem-api.vercel.app/api/getOneTarget' + id,
-            responseType: 'json'
-          })
-            .then(function (res) {
-              console.log(res);
-              let details = [];
+            
+      }
     
-                for (var i = 0; i < Object.keys(res.data.message).length; i++) {
-                    details.push({ name: i, value: res.data.message[i] })
-                }
-                console.log("fjhdhfjdhfj" + i);
-                console.log(details);
-                setTarget({target: details});
-            });
+    const deleteTarget = (id) => {
+        // axios.delete('https://skem-api.vercel.app/api/deleteTarget/')
+        //     .then(() => setStatus('Delete successful'));
+        axios({
+            method: 'post',
+            url: 'https://skem-api.vercel.app/api/deleteTarget/',
+            data: {
+                target: id
+            },
+            responseType: 'json'
+        }).then(function (res){
+            console.log(res);
+            setStatus('Delete successful');
+            console.log(status);
+        });
+        console.log("This is the delete function" + id);
     }
+
+    // const updateTarget = (id) => {
+    //     axios.put('https://skem-api.vercel.app/api/updateTarget/')
+    //         .then(() => setStatus('Ipdate successful'));
+    // }
+
+    // const getTarget = (id) => {
+    //     handleShow();
+    //     axios({
+    //         method: 'get',
+    //         url: 'https://skem-api.vercel.app/api/getOneTarget',
+    //         data: {
+    //                 target: id
+    //             },
+    //         responseType: 'json'
+    //       })
+    //         .then(function (res) {
+    //           console.log(res);
+    //           let details = [];
+    
+    //             for (var i = 0; i < Object.keys(res.data.message).length; i++) {
+    //                 details.push({ name: i, value: res.data.message[i] })
+    //             }
+    //             console.log("fjhdhfjdhfj" + i);
+    //             console.log(details);
+    //             // setTarget(details);
+    //         });
+    // }
 
     const [show, setShow] = useState(false);
 
@@ -73,12 +95,12 @@ function DataList(){
         <Container>
 
         {/* Edit Modal  */}
-        <Modal show={show} onHide={handleClose}>
+        {/* <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
             <Modal.Title>Edit Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            {targets.target.map(target => 
+            {target.map(target => 
             <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Author</Form.Label>
@@ -97,7 +119,7 @@ function DataList(){
             </Form>
             )}
         </Modal.Body>
-        </Modal>
+        </Modal> */}
         <Table striped bordered hover>
             <thead>
             <tr>
@@ -110,16 +132,18 @@ function DataList(){
             </tr>
             </thead>
             <tbody>
-                {datas.data.map(data => 
+            <Spinner animation="border" />
+                {data.map(data1 => 
                 <tr>
-                <td>{data.value.Target_ID}</td>
-                <td>{data.value.author}</td>
-                <td>{data.value.date_mod}</td>
-                {/* <td>{data.value.image}</td> */}
-                <td>{data.value.img_name}</td>
+                <td>{data1.value.Target_ID}</td>
+                <td>{data1.value.author}</td>
+                <td>{data1.value.date_mod}</td>
+                {/* <td>{data1.value.img}</td> */}
+                <td>{data1.value.img_name}</td>
                 <td>
                     <Button variant="success" onClick={handleShow}>Edit</Button>
-                    <Button variant="danger" onClick={deleteTarget(data.value.Target_ID)}>Delete</Button>
+                    {/* <Button variant="success" onClick={getTarget(data1.value.Target_ID)}>Edit</Button> */}
+                    {/* <Button variant="danger" onClick={deleteTarget(data1.value.Target_ID)}>Delete</Button> */}
               </td>
                 </tr>
              )}
@@ -174,3 +198,4 @@ export default DataList;
     // }
 
 // }
+
