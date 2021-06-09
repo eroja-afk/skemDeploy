@@ -2,7 +2,7 @@ import { Container, Col, Row, Card, Button, Form, Navbar, Modal, Table } from 'r
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useEffect, useState, Component } from "react";
 import { Link } from 'react-router-dom';
-import Api from '../axios';
+import DataComp from '../DataComponent';
 import axios from 'axios';
 import '../App.css';
 import AXCont from './AxiosController';
@@ -95,7 +95,7 @@ function Dashboard (){
             </Form>
             </Modal.Body>
             </Modal>
-            <Api />
+            <DataComp />
           </Container>
       </div>
     );

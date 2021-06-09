@@ -4,7 +4,7 @@ import { Container, Col, Row, Card, Button, Form, Navbar, Modal, Table, Spinner 
 import { Link } from 'react-router-dom';
 
 
-function DataList(){
+function DataComponent(){
 
     useEffect(() => {
         getAllTargets();
@@ -153,7 +153,7 @@ function DataList(){
     )
 }
 
-export default DataList;
+export default DataComponent;
 
 // export default class DataList extends React.Component {
 //     state = {
