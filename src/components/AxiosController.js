@@ -1,13 +1,20 @@
-const [data, setData] = useState([]);
-  var datas =[]
-  var targets =[]
+import React, { useEffect, useState } from "react";
+import axios from 'axios';
+
+const fs = require('fs');
+
+//const [data, setData] = useState([]);
+ 
   //const [targets, setTarget] = useState([]);
 
-  const [status, setStatus] = useState("");
+  //const [status, setStatus] = useState("");
 
   const createTarget = (event) => {
     // Prevent default behavior
     event.preventDefault();
+
+    var datas =[]
+    var targets =[]
 
     const data = new FormData(event.target);
     // Access FormData fields with `data.get(fieldName)`
@@ -15,6 +22,9 @@ const [data, setData] = useState([]);
       console.log("Datas - " + data.get('image_name') ," - " + data.get('author')," - " + data.get('image'));
       axios({
           method: 'post',
+          headers:{
+            "Access-Control-Allow-Origin":"*"
+          },
           url: 'localhost:3000/AxiosController/createTarget',
           data: {
             author: data.get('author'),
@@ -24,26 +34,28 @@ const [data, setData] = useState([]);
           responseType: 'json'
         })
           .then(function (res) {
-            console.log(res);
-            // let details = [];
+            var buf = Buffer.from(data.get('image'), 'base64');
+            fs.writeFile('../../DBimages/'+data.get('image_name')+'.png', buf, /* callback will go here */);
 
-            //   for (var i = 0; i < Object.keys(res.data.message).length; i++) {
-            //       details.push({ name: i, value: res.data.message[i] })
-            //   }
-            //   console.log("fjhdhfjdhfj" + i);
-            //   console.log(datas);
-            //   //setDatas(details);
-            //   setData(details)
+            let details = [];
+
+              for (var i = 0; i < Object.keys(res.data.message).length; i++) {
+                  details.push({ name: i, value: res.data.message[i] })
+              }
+              console.log("fjhdhfjdhfj" + i);
+              console.log(datas);
+            //   setDatas(details);
+               return(details)
           });
           
     }
 
-    const [data, setData] = useState([]);
-    var datas =[]
-    const [target, setTarget] = useState([]);
+    // const [data, setData] = useState([]);
+    // var datas =[]
+    // const [target, setTarget] = useState([]);
     //const [targets, setTarget] = useState([]);
 
-    const [status, setStatus] = useState("");
+    // const [status, setStatus] = useState("");
 
     const getAllTargets = () => {
         console.log("wTF dasdadad")
@@ -60,8 +72,9 @@ const [data, setData] = useState([]);
                     details.push({ name: i, value: res.data.message[i] })
                 }
                 console.log("This is get All targets # of datas - " + i);
-                //setDatas(details);
-                setData(details)
+                
+                //setData(details)
+                return(details)
             });
             
       }
@@ -79,8 +92,8 @@ const [data, setData] = useState([]);
             responseType: 'json'
         }).then(function (res){
             console.log(res);
-            setStatus('Delete successful');
-            console.log(status);
+            //setStatus('Delete successful');
+            return('Delete successful')
         });
         console.log("This is the delete function" + id);
     }
@@ -93,9 +106,9 @@ const [data, setData] = useState([]);
                 method: 'post',
                 url: 'localhost:3000/AxiosController/updateTarget',
                 data: {
-                  author: data.get('author'),
-                  name: data.get('image_name'),
-                  image: data.get('image')
+                  // author: data.get('author'),
+                  // name: data.get('image_name'),
+                  // image: data.get('image')
                 },
                 responseType: 'json'
               })
@@ -115,7 +128,7 @@ const [data, setData] = useState([]);
 
     const getTarget = (id) => {
         console.log("This is the ID " + id);
-        handleShow();
+        //handleShow();
         axios({
             method: 'post',
             url: 'https://skem-api.vercel.app/api/getOneTarget',
@@ -131,13 +144,14 @@ const [data, setData] = useState([]);
                 for (var i = 0; i < Object.keys(res.data.message).length; i++) {
                     details.push({ name: i, value: res.data.message[i] })
                 }
-                console.log("fjhdhfjdhfj" + i);
-                console.log(details);
-                setTarget(details);
+
+                //setTarget(details);
+                return(details)
+                
             });
     }
 
-    module.exports = {
+    module.export = {
         getTarget,
         getAllTargets,
         createTarget,

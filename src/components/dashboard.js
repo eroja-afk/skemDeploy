@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import DataComp from '../DataComponent';
 import axios from 'axios';
 import '../App.css';
-import AXCont from './AxiosController';
+const Controller = require('./AxiosController')
 
 function Dashboard (){
 
@@ -21,7 +21,7 @@ function Dashboard (){
 
   const [status, setStatus] = useState("");
 
-  const createTarget = (event) => {
+  const createTarget =  (event) => {
     // Prevent default behavior
     event.preventDefault();
 
@@ -31,7 +31,7 @@ function Dashboard (){
       console.log("Datas - " + data.get('image_name') ," - " + data.get('author')," - " + data.get('image'));
       axios({
           method: 'post',
-          url: 'localhost:3000/AxiosController/createTarget',
+          url: 'https://skem-api.vercel.app/api/createTarget',
           data: {
             author: data.get('author'),
             name: data.get('image_name'),
@@ -39,18 +39,20 @@ function Dashboard (){
           },
           responseType: 'json'
         })
-          .then(function (res) {
-            console.log(res);
-            // let details = [];
+        .then(function (res) {
+          
 
-            //   for (var i = 0; i < Object.keys(res.data.message).length; i++) {
-            //       details.push({ name: i, value: res.data.message[i] })
-            //   }
-            //   console.log("fjhdhfjdhfj" + i);
-            //   console.log(datas);
-            //   //setDatas(details);
-            //   setData(details)
-          });
+
+          let details = [];
+
+            for (var i = 0; i < Object.keys(res.data.message).length; i++) {
+                details.push({ name: i, value: res.data.message[i] })
+            }
+            console.log("fjhdhfjdhfj" + i);
+            console.log(datas);
+          //   setDatas(details);
+             return(details)
+        });
           
     }
 

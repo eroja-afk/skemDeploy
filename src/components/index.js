@@ -12,7 +12,7 @@ function Index() {
    const handleShow = () => setShow(true);
 
    useEffect(() => {
-    getAllTargets();
+    //getAllTargets();
 }, []);
 
 
