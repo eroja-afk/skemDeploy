@@ -1,5 +1,7 @@
 .App {
-  text-align: center;
+  background-color: #e0e0e0;
+  height: 100vh;
+  width: 100vw;
 }
 
 .App-logo {
@@ -35,4 +37,25 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.button {
+  line-height: 12px;
+  width: 18px;
+  font-size: 8pt;
+  font-family: tahoma;
+  margin-top: 20px;
+  margin-right: 2px;
+  position:absolute;
+  top:0;
+  right:100px;
+}
+
+.List {
+  height: 90vh;
+}
+
+.blockquote-footer {
+  position: absolute;
+  bottom: 0;
 }

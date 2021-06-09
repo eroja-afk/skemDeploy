@@ -13,7 +13,7 @@ function DataList(){
 
     const [data, setData] = useState([]);
     var datas =[]
-    var targets =[]
+    const [target, setTarget] = useState([]);
     //const [targets, setTarget] = useState([]);
 
     const [status, setStatus] = useState("");
@@ -25,20 +25,20 @@ function DataList(){
             url: 'https://skem-api.vercel.app/api/getAllTargets',
             responseType: 'json'
           })
-            .then(function (res) {
+            .then(function (res) { 
               console.log(res);
               let details = [];
     
                 for (var i = 0; i < Object.keys(res.data.message).length; i++) {
                     details.push({ name: i, value: res.data.message[i] })
                 }
-                console.log("fjhdhfjdhfj" + i);
-                console.log(datas);
+                console.log("This is get All targets # of datas - " + i);
                 //setDatas(details);
                 setData(details)
             });
             
       }
+
     
     const deleteTarget = (id) => {
         // axios.delete('https://skem-api.vercel.app/api/deleteTarget/')
@@ -63,28 +63,29 @@ function DataList(){
     //         .then(() => setStatus('Ipdate successful'));
     // }
 
-    // const getTarget = (id) => {
-    //     handleShow();
-    //     axios({
-    //         method: 'get',
-    //         url: 'https://skem-api.vercel.app/api/getOneTarget',
-    //         data: {
-    //                 target: id
-    //             },
-    //         responseType: 'json'
-    //       })
-    //         .then(function (res) {
-    //           console.log(res);
-    //           let details = [];
+    const getTarget = (id) => {
+        console.log("This is the ID " + id);
+        handleShow();
+        axios({
+            method: 'post',
+            url: 'https://skem-api.vercel.app/api/getOneTarget',
+            data: {
+                    target: id
+                },
+            responseType: 'json'
+          })
+            .then(function (res) {
+              console.log(res);
+              let details = [];
     
-    //             for (var i = 0; i < Object.keys(res.data.message).length; i++) {
-    //                 details.push({ name: i, value: res.data.message[i] })
-    //             }
-    //             console.log("fjhdhfjdhfj" + i);
-    //             console.log(details);
-    //             // setTarget(details);
-    //         });
-    // }
+                for (var i = 0; i < Object.keys(res.data.message).length; i++) {
+                    details.push({ name: i, value: res.data.message[i] })
+                }
+                console.log("fjhdhfjdhfj" + i);
+                console.log(details);
+                setTarget(details);
+            });
+    }
 
     const [show, setShow] = useState(false);
 
@@ -95,7 +96,7 @@ function DataList(){
         <Container>
 
         {/* Edit Modal  */}
-        {/* <Modal show={show} onHide={handleClose}>
+        <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
             <Modal.Title>Edit Details</Modal.Title>
         </Modal.Header>
@@ -119,8 +120,8 @@ function DataList(){
             </Form>
             )}
         </Modal.Body>
-        </Modal> */}
-        <Table striped bordered hover>
+        </Modal>
+        <Table striped bordered hover className="text-center">
             <thead>
             <tr>
                 <th>Target ID</th>
@@ -141,8 +142,7 @@ function DataList(){
                 {/* <td>{data1.value.img}</td> */}
                 <td>{data1.value.img_name}</td>
                 <td>
-                    <Button variant="success" onClick={handleShow}>Edit</Button>
-                    {/* <Button variant="success" onClick={getTarget(data1.value.Target_ID)}>Edit</Button> */}
+                    <Button variant="success" onClick={ () => getTarget(data1.value.Target_ID)}>Edit</Button>
                     {/* <Button variant="danger" onClick={deleteTarget(data1.value.Target_ID)}>Delete</Button> */}
               </td>
                 </tr>
