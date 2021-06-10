@@ -23,25 +23,53 @@ var targets =[]
 
 const [status, setStatus] = useState("");
 
-const Login = () => {
-    console.log("wTF dasdadad")
-    // axios({
-    //     method: 'get',
-    //     url: 'https://skem-api.vercel.app/api/getAllTargets',
-    //     responseType: 'json'
-    //   })
-    //     .then(function (res) {
-    //       console.log(res);
-    //       let details = [];
+const Login = (event) => {
+    event.preventDefault();
 
-    //         for (var i = 0; i < Object.keys(res.data.message).length; i++) {
-    //             details.push({ name: i, value: res.data.message[i] })
-    //         }
-    //         console.log("fjhdhfjdhfj" + i);
-    //         console.log(datas);
-    //         //setDatas(details);
-    //         setData(details)
-    //     });
+    const data = new FormData(event.target);
+    console.log("Datas - " + data.get('username') ," - " + data.get('password'));
+    console.log("wTF dasdadad")
+    axios({
+        method: 'post',
+        url: 'https://skem-api.vercel.app/api/loginAccount',
+        data: {
+          username: data.get("username"),
+          password: data.get("password")
+        },
+        responseType: 'json'
+      })
+        .then(function (res) {
+          console.log(res);
+          // let details = [];
+
+          //   for (var i = 0; i < Object.keys(res.data.message).length; i++) {
+          //       details.push({ name: i, value: res.data.message[i] })
+          //   }
+          //   console.log("fjhdhfjdhfj" + i);
+          //   console.log(datas);
+          //   //setDatas(details);
+          //   setData(details)
+        });
+  }
+
+  const getAllTargets = () => {
+    console.log("wTF dasdadad")
+    axios({
+        method: 'get',
+        url: 'https://skem-api.vercel.app/api/getAllTargets',
+        responseType: 'json'
+      })
+        .then(function (res) { 
+          console.log(res);
+          let details = [];
+
+            for (var i = 0; i < Object.keys(res.data.message).length; i++) {
+                details.push({ name: i, value: res.data.message[i] })
+            }
+            console.log("This is get All targets # of datas - " + i);
+            //setDatas(details);
+            setData(details)
+        });
         
   }
 
@@ -60,16 +88,16 @@ const Login = () => {
          <Form onSubmit={Login}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Username</Form.Label>
-            <Form.Control type="email" placeholder="Enter Username" name="username"/>
+            <Form.Control type="text" placeholder="Enter Username" name="username"/>
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control type="password" placeholder="Enter Password" name="password"/>
           </Form.Group>
           <br />
-          <Link to="/dashboard">
+          {/* <Link to="/dashboard"> */}
             <Button variant="primary" type="submit" size="md" block>Submit</Button>
-          </Link>
+          {/* </Link> */}
         </Form>
          </Modal.Body>
        </Modal>
