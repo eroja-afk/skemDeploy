@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import DataComp from '../DataComponent';
 import axios from 'axios';
 import '../App.css';
-import AXCont from './AxiosController';
+const Controller = require('./AxiosController')
 
 function Dashboard (){
 
