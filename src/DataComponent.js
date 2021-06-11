@@ -58,10 +58,27 @@ function DataComponent(){
         console.log("This is the delete function" + id);
     }
 
-    // const updateTarget = (id) => {
-    //     axios.put('https://skem-api.vercel.app/api/updateTarget/')
-    //         .then(() => setStatus('Ipdate successful'));
-    // }
+    const updateTarget = (event) => {
+        // axios.put('https://skem-api.vercel.app/api/updateTarget/')
+        //     .then(() => setStatus('Ipdate successful'));
+            event.preventDefault();
+
+            const data = new FormData(event.target);
+            console.log("Datas - " + data.get('name'));
+            console.log("wTF dasdadad")
+            axios({
+                method: 'post',
+                url: 'https://skem-api.vercel.app/api/updateTarget/',
+                data: {
+                  name: data.get("name"),
+                  image: data.get("image")
+                },
+                responseType: 'json'
+              })
+                .then(function (res) {
+                  console.log(res);
+                });
+    }
 
     const getTarget = (id) => {
         console.log("This is the ID " + id);
@@ -102,14 +119,16 @@ function DataComponent(){
         </Modal.Header>
         <Modal.Body>
             {target.map(target => 
-            <Form>
+            <Form onSubmit={updateTarget}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Author</Form.Label>
-            <Form.Control type="text" placeholder={target.value.author} />
+            <Form.Control type="text" value={target.value.author} name="name"/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Image Name</Form.Label>
-            <Form.Control type="text" placeholder={target.value.img_name} />
+            <Form.Control type="text" placeholder="Enter Image Name" value={target.value.img_name} name="img_name"/>
+            <Form.Control type="text" value={target.value.date_mod}/>
+            <Form.Control type="text" placeholder={target.value.image} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Image</Form.Label>
@@ -143,7 +162,7 @@ function DataComponent(){
                 <td>{data1.value.img_name}</td>
                 <td>
                     <Button variant="success" onClick={ () => getTarget(data1.value.Target_ID)}>Edit</Button>
-                    {/* <Button variant="danger" onClick={deleteTarget(data1.value.Target_ID)}>Delete</Button> */}
+                    <Button variant="danger" onClick={() => deleteTarget(data1.value.Target_ID)}>Delete</Button>
               </td>
                 </tr>
              )}

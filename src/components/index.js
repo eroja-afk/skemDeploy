@@ -1,9 +1,10 @@
 import { Container, Col, Row, Card, Button, Form, Navbar, Modal, Table, Spinner } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import '../App.css';
 import axios from 'axios';
+import Dashboard from './dashboard';
 
 function Index() {
   const [show, setShow] = useState(false);
@@ -15,13 +16,15 @@ function Index() {
     //getAllTargets();
 }, []);
 
+const history = useHistory();
+
 
 const [data, setData] = useState([]);
 var datas =[]
 var targets =[]
 //const [targets, setTarget] = useState([]);
 
-const [status, setStatus] = useState("");
+const [user, setUser] = useState("");
 
 const Login = (event) => {
     event.preventDefault();
@@ -40,15 +43,20 @@ const Login = (event) => {
       })
         .then(function (res) {
           console.log(res);
-          // let details = [];
+          let details = [];
 
-          //   for (var i = 0; i < Object.keys(res.data.message).length; i++) {
-          //       details.push({ name: i, value: res.data.message[i] })
-          //   }
-          //   console.log("fjhdhfjdhfj" + i);
-          //   console.log(datas);
-          //   //setDatas(details);
-          //   setData(details)
+            if (Object.keys(res.data.message).length == 1) {
+                details.push({ value: res.data.message[0] })
+                // console.log(details)
+                // console.log("Username - " + details[0].value.username);
+                history.push({
+                pathname: '/dashboard',
+                state: {
+                  username: details[0].value.username,
+                  password: details[0].value.password
+                }
+              })
+            }
         });
   }
 
@@ -76,8 +84,10 @@ const Login = (event) => {
   return (
     <div className="App">
     <Navbar className="bg-light justify-content-between">
+      <Container>
       <Navbar.Brand>PC Builder</Navbar.Brand>
         <Button variant="primary" onClick={handleShow}>Login</Button>
+        </Container>
     </Navbar>
     <br />
        <Modal show={show} onHide={handleClose}>
