@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 
 function DataComponent(){
 
+    const [showSpin, setShowSpin] = useState("visible");
+
     useEffect(() => {
         getAllTargets();
    }, []);
@@ -34,6 +36,7 @@ function DataComponent(){
                 }
                 console.log("This is get All targets # of datas - " + i);
                 //setDatas(details);
+                setShowSpin("hidden");
                 setData(details)
             });
             
@@ -70,8 +73,8 @@ function DataComponent(){
                 method: 'post',
                 url: 'https://skem-api.vercel.app/api/updateTarget/',
                 data: {
-                  name: data.get("name"),
-                  image: data.get("image")
+                  name: data.get("author"),
+                  image: data.get("img_name")
                 },
                 responseType: 'json'
               })
@@ -122,25 +125,27 @@ function DataComponent(){
             <Form onSubmit={updateTarget}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Author</Form.Label>
-            <Form.Control type="text" value={target.value.author} name="name"/>
+            <Form.Control type="text" value={target.value.author} name="author"/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Image Name</Form.Label>
             <Form.Control type="text" placeholder="Enter Image Name" value={target.value.img_name} name="img_name"/>
-            <Form.Control type="text" value={target.value.date_mod}/>
-            <Form.Control type="text" placeholder={target.value.image} />
+            {/* <Form.Control type="text" value={target.value.date_mod}/> */}
+            {/* <Form.Control type="text" placeholder={target.value.image} /> */}
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Image</Form.Label>
             <Form.Control type="file" />
             </Form.Group>
-            <Button variant="secondary" onClick={handleClose}>Cancel</Button>
-            <Button variant="primary" type="submit">Edit</Button>
+            <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+                <Button variant="secondary" onClick={handleClose} style={{marginRight: '10px'}}>Cancel</Button>
+                <Button variant="primary" type="submit">Edit</Button>
+            </div>
             </Form>
             )}
         </Modal.Body>
         </Modal>
-        <Table striped bordered hover className="text-center">
+        <Table responsive="sm" className="text-center">
             <thead>
             <tr>
                 <th>Target ID</th>
@@ -152,7 +157,6 @@ function DataComponent(){
             </tr>
             </thead>
             <tbody>
-            <Spinner animation="border" />
                 {data.map(data1 => 
                 <tr>
                 <td>{data1.value.Target_ID}</td>
@@ -161,12 +165,13 @@ function DataComponent(){
                 {/* <td>{data1.value.img}</td> */}
                 <td>{data1.value.img_name}</td>
                 <td>
-                    <Button variant="success" onClick={ () => getTarget(data1.value.Target_ID)}>Edit</Button>
+                    <Button variant="success" onClick={ () => getTarget(data1.value.Target_ID)} style={{marginRight: '10px'}}>Edit</Button>
                     <Button variant="danger" onClick={() => deleteTarget(data1.value.Target_ID)}>Delete</Button>
               </td>
                 </tr>
              )}
             </tbody>
+            <Spinner animation="border" style={{visibility: showSpin}}/>
         </Table>
       </Container>
     )
