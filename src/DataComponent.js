@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { set } from 'lodash';
 import React, { useEffect, useState, Component, setState } from "react";
 import { Container, Col, Row, Card, Button, Form, Navbar, Modal, Table, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -16,7 +17,6 @@ function DataComponent(){
     const [data, setData] = useState([]);
     var datas =[]
     const [target, setTarget] = useState([]);
-    //const [targets, setTarget] = useState([]);
 
     const [status, setStatus] = useState("");
 
@@ -44,26 +44,26 @@ function DataComponent(){
 
     
     const deleteTarget = (id) => {
-        // axios.delete('https://skem-api.vercel.app/api/deleteTarget/')
-        //     .then(() => setStatus('Delete successful'));
-        axios({
-            method: 'post',
-            url: 'https://skem-api.vercel.app/api/deleteTarget/',
-            data: {
-                target: id
-            },
-            responseType: 'json'
-        }).then(function (res){
-            console.log(res);
-            setStatus('Delete successful');
-            console.log(status);
-        });
-        console.log("This is the delete function" + id);
+        const r = window.confirm("Are you sure you wanna delete this target?"); 
+        if(r == true){ 
+            axios({
+                method: 'post',
+                url: 'https://skem-api.vercel.app/api/deleteTarget/',
+                data: {
+                    target: id
+                },
+                responseType: 'json'
+            }).then(function (res){
+                console.log(res);
+                setStatus('Delete successful');
+                console.log(status);
+                getAllTargets();
+            });
+            console.log("This is the delete function" + id);
+        }
     }
 
     const updateTarget = (event) => {
-        // axios.put('https://skem-api.vercel.app/api/updateTarget/')
-        //     .then(() => setStatus('Ipdate successful'));
             event.preventDefault();
 
             const data = new FormData(event.target);
@@ -80,6 +80,7 @@ function DataComponent(){
               })
                 .then(function (res) {
                   console.log(res);
+                  getAllTargets();
                 });
     }
 
@@ -110,7 +111,7 @@ function DataComponent(){
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleShow = () => setShow(false);
 
     return (
         <Container>
@@ -124,18 +125,12 @@ function DataComponent(){
             {target.map(target => 
             <Form onSubmit={updateTarget}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Author</Form.Label>
-            <Form.Control type="text" value={target.value.author} name="author"/>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Image Name</Form.Label>
             <Form.Control type="text" placeholder="Enter Image Name" value={target.value.img_name} name="img_name"/>
-            {/* <Form.Control type="text" value={target.value.date_mod}/> */}
-            {/* <Form.Control type="text" placeholder={target.value.image} /> */}
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Image</Form.Label>
-            <Form.Control type="file" />
+            <Form.Label>Image Description</Form.Label>
+            <Form.Control type="text" placeholder="Enter Image Description" value={target.value.img_name} name="img_desc"/>
             </Form.Group>
             <div style={{display: 'flex', justifyContent: 'flex-end'}}>
                 <Button variant="secondary" onClick={handleClose} style={{marginRight: '10px'}}>Cancel</Button>
@@ -148,22 +143,22 @@ function DataComponent(){
         <Table responsive="sm" className="text-center">
             <thead>
             <tr>
-                <th>Target ID</th>
                 <th>Author</th>
                 <th>Date Modified</th>
-                {/* <th>Image</th> */}
+                <th>Image</th>
                 <th>Image Name</th>
+                <th>Image Description</th>
                 <th>Action</th>
             </tr>
             </thead>
             <tbody>
                 {data.map(data1 => 
                 <tr>
-                <td>{data1.value.Target_ID}</td>
                 <td>{data1.value.author}</td>
                 <td>{data1.value.date_mod}</td>
-                {/* <td>{data1.value.img}</td> */}
+                <td><img src={`http://localhost:3002/show/${data1.value.image}`} height="200px" width="200px"/></td>
                 <td>{data1.value.img_name}</td>
+                <td>{data1.value.desc}</td>
                 <td>
                     <Button variant="success" onClick={ () => getTarget(data1.value.Target_ID)} style={{marginRight: '10px'}}>Edit</Button>
                     <Button variant="danger" onClick={() => deleteTarget(data1.value.Target_ID)}>Delete</Button>
@@ -178,48 +173,4 @@ function DataComponent(){
 }
 
 export default DataComponent;
-
-// export default class DataList extends React.Component {
-//     state = {
-//         datas: []
-//     };
-
-//     componentDidMount(){
-//         axios.get('https://skem-api.vercel.app/api/getAllTargets').then(res => {
-//             let details = [];
-
-//             for (var i = 0; i < Object.keys(res.data.message).length; i++) {
-//                 details.push({ name: i, value: res.data.message[i] })
-//             }
-//             console.log("fjhdhfjdhfj" + i);
-//             console.log(details);
-//             this.setState({ datas: details});
-//         });
-//     }
-
-//     constructor(props, context) {
-//         super(props, context);
-    
-//         this.handleShow = this.handleShow.bind(this);
-//         this.handleClose = this.handleClose.bind(this);
-    
-//         this.modal = {
-//           show: null
-//         };
-//       }
-    
-    
-    //   handleClose() {
-    //     this.setState({show: null});
-    //   };
-    
-    //   handleShow(id) {
-    //     this.setState({show: id});
-    //   };
-
-    // render() {
-        
-    // }
-
-// }
 

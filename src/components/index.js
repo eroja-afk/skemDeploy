@@ -32,7 +32,6 @@ const [errors, setErrors] = useState("");
 
 const Login = (event) => {
     event.preventDefault();
-
     const data = new FormData(event.target);
     if(data.get('username') != " " && data.get('password') != " "){
       console.log("Datas - " + data.get('username') ," - " + data.get('password'));
@@ -131,20 +130,18 @@ const Login = (event) => {
             <Table responsive="sm" className="text-center">
               <thead>
               <tr>
-                  <th>Target ID</th>
                   <th>Author</th>
                   <th>Date Modified</th>
-                  {/* <th>Image</th> */}
+                  <th>Image</th>
                   <th>Image Name</th>
               </tr>
               </thead>
               <tbody>
                   {data.map(data1 => 
                   <tr>
-                  <td>{data1.value.Target_ID}</td>
                   <td>{data1.value.author}</td>
                   <td>{data1.value.date_mod}</td>
-                  {/* <td>{data1.value.img}</td> */}
+                  <td><img src={`http://localhost:3002/show/${data1.value.image}`} height="200px" width="200px"/></td>
                   <td>{data1.value.img_name}</td>
                   </tr>
               )}

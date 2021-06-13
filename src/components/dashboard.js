@@ -19,16 +19,34 @@ function Dashboard (){
   const createTarget =  (event) => {
     // Prevent default behavior
     event.preventDefault();
-
     const data = new FormData(event.target);
-      // console.log("Datas - " + data.get('image_name') ," - " + data.get('author')," - " + data.get('myImage'));
+    let baseURL = "";
+      // Make new FileReader
+    let reader = new FileReader();
+    let base64;
+
+      // Convert the file to base64 text
+      reader.readAsDataURL(data.get("myImage"));
+
+      // on reader load somthing...
+      reader.onload = () => {
+        // Make a fileInfo Object
+        console.log("Called", reader);
+        baseURL = reader.result;
+        // console.log(baseURL);
+        base64 = baseURL.replace("data:image/jpeg;base64,", "");
+        // console.log(base64);
+        console.log(image.name);
+        // console.log("Datas - " + data.get('image_name') ," - " + data.get('author')," - " + data.get('myImage'));
       axios({
           method: 'post',
-          url: '',
+          url: 'https://skem-api.vercel.app/api/createTarget',
           data: {
             author: data.get('author'),
             name: data.get('image_name'),
-            image: image
+            image: base64,
+            filename: image.name,
+            desc: data.get('img_desc')
           },
           responseType: 'json'
         })
@@ -39,21 +57,20 @@ function Dashboard (){
             for (var i = 0; i < Object.keys(res.data.message).length; i++) {
                 details.push({ name: i, value: res.data.message[i] })
             }
-            console.log("fjhdhfjdhfj" + i);
-            console.log(datas);
-          //   setDatas(details);
+            
+            const formData = new FormData();
+            formData.append("myImage", image);
+
+            axios
+              .post('http://localhost:3002/upload', formData)
+              .then((res) => {
+                console.log("File Upload success");
+              })
+              .catch((err) => console.log("File Upload Error"));
+              handleClose();
              return(details)
         }); 
-
-        const formData = new FormData();
-          formData.append("myImage", image);
-
-          axios
-            .post('http://localhost:3002/upload', formData)
-            .then((res) => {
-              alert("File Upload success");
-            })
-            .catch((err) => alert("File Upload Error"));
+      };
     }
 
     function handleLogout() {
@@ -66,8 +83,6 @@ function Dashboard (){
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
-
 
     return (
       <div className="App">
@@ -97,8 +112,12 @@ function Dashboard (){
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>Image Name</Form.Label>
-                <Form.Control type="text" placeholder="Enter Image Name" name="image_name" />
+                <Form.Control type="text" placeholder="Enter Image Name" name="image_name"/>
                 <Form.Control type="hidden" placeholder="Author" value={state.username} name="author"/>
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Image Description</Form.Label>
+                <Form.Control type="text" placeholder="Enter Image Description" name="img_desc"/>
                 </Form.Group>
                 <div style={{display: 'flex', justifyContent: 'flex-end'}}>
                 <Button variant="secondary" onClick={handleClose} style={{marginRight: '10px'}}>Close</Button>
