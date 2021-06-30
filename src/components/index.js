@@ -34,8 +34,8 @@ const Login = (event) => {
     event.preventDefault();
     const data = new FormData(event.target);
     if(data.get('username') != " " && data.get('password') != " "){
-      console.log("Datas - " + data.get('username') ," - " + data.get('password'));
-      console.log("wTF dasdadad")
+      //console.log("Datas - " + data.get('username') ," - " + data.get('password'));
+      //console.log("wTF dasdadad")
       axios({
           method: 'post',
           url: 'https://skem-api.vercel.app/api/loginAccount',
@@ -57,7 +57,8 @@ const Login = (event) => {
                   pathname: '/dashboard',
                   state: {
                     username: details[0].value.username,
-                    password: details[0].value.password
+                    password: details[0].value.password,
+                    name: details[0].value.name
                   }
                 })
               }

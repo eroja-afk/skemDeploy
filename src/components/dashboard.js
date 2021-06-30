@@ -10,7 +10,7 @@ function Dashboard (){
 
   const history = useHistory();
   const {state} = useLocation();
-  const { username, password } = state;
+  const { username, password, name } = state;
 
   var datas =[]
 
@@ -37,7 +37,7 @@ function Dashboard (){
         base64 = baseURL.replace("data:image/jpeg;base64,", "");
         // console.log(base64);
         console.log(image.name);
-        // console.log("Datas - " + data.get('image_name') ," - " + data.get('author')," - " + data.get('myImage'));
+        console.log("Datas - " + data.get('image_name') ," - " + data.get('author')," - " + data.get('myImage'));
       axios({
           method: 'post',
           url: 'https://skem-api.vercel.app/api/createTarget',
@@ -77,6 +77,7 @@ function Dashboard (){
       history.push("/login");
       state.username = ""
       state.password = ""
+      state.name = ""
     }
 
     const [show, setShow] = useState(false);
@@ -113,7 +114,7 @@ function Dashboard (){
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>Image Name</Form.Label>
                 <Form.Control type="text" placeholder="Enter Image Name" name="image_name"/>
-                <Form.Control type="hidden" placeholder="Author" value={state.username} name="author"/>
+                <Form.Control type="hidden" placeholder="Author" value={state.name} name="author"/>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Image Description</Form.Label>

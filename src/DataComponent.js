@@ -111,7 +111,7 @@ function DataComponent(){
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     return (
         <Container>
@@ -130,7 +130,7 @@ function DataComponent(){
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Image Description</Form.Label>
-            <Form.Control type="text" placeholder="Enter Image Description" value={target.value.img_name} name="img_desc"/>
+            <Form.Control type="text" placeholder="Enter Image Description" value={target.value.desc} name="img_desc"/>
             </Form.Group>
             <div style={{display: 'flex', justifyContent: 'flex-end'}}>
                 <Button variant="secondary" onClick={handleClose} style={{marginRight: '10px'}}>Cancel</Button>
